@@ -1,0 +1,1 @@
+# ecu-info-sismos
