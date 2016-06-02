@@ -1,0 +1,10 @@
+{
+  "name": "ionic-blankapp",
+  "private": true,
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.2.4"
+  },
+  "dependencies": {
+    "abdmob/x2js": "x2js#^1.2.0"
+  }
+}
