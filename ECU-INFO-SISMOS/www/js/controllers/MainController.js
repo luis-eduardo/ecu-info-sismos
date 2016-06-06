@@ -1,11 +1,18 @@
 ﻿angular.module('controllers').controller('MainController', ['$scope', '$ionicPlatform', '$ionicPopup', '$ionicLoading', 'QuakeService', 'GeoService', function ($scope, $ionicPlatform, $ionicPopup, $ionicLoading, QuakeService, GeoService) {
 
     $scope.initialize = function () {
-        initIonic();
-        $ionicLoading.show({template: 'Obteniendo coordenadas...'})
-        GeoService.getCurrentLocation().then(function () {
-            $ionicLoading.hide();
-            loadQuakeMarkers();
+
+        $ionicPlatform.ready(function () {
+
+            init();
+
+            if (cordova.platformId === 'ios' && window.cordova && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+                cordova.plugins.Keyboard.disableScroll(true);
+            }
+            if (window.StatusBar) {
+                StatusBar.styleDefault();
+            }
         });
     };
 
@@ -31,15 +38,19 @@
     };
 
     //Private methods
-    initIonic = function () {
-        $ionicPlatform.ready(function () {
-            if (cordova.platformId === 'ios' && window.cordova && window.cordova.plugins.Keyboard) {
-                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-                cordova.plugins.Keyboard.disableScroll(true);
-            }
-            if (window.StatusBar) {
-                StatusBar.styleDefault();
-            }
+    init = function () {
+        console.log("$ionicPlatform.ready");
+
+        $ionicLoading.show({ template: 'Obteniendo coordenadas...' });
+        GeoService.getCurrentLocation().then(function () {
+            $ionicLoading.hide();
+            loadQuakeMarkers();
+        }).catch(function (reason) {
+            $ionicLoading.hide();
+            $ionicPopup.alert({
+                title: 'Ha ocurrido un error al tratar de obtener la ubicación del dispositivo.',
+                template: reason
+            });
         });
     };
 
@@ -50,8 +61,9 @@
             var jsonObj = x2js.xml_str2json(xmlDoc);
 
             $scope.quakeMarkers = jsonObj.markers.marker;
-            $ionicLoading.hide()
+            $ionicLoading.hide();
         }).catch(function (reason) {
+            $ionicLoading.hide();
             $ionicPopup.alert({
                 title: 'Ha ocurrido un error.',
                 template: reason

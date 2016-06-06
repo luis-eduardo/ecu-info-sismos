@@ -22,8 +22,6 @@
                   };
 
                   deferred.resolve(position);
-
-                  console.log("Got location", position);
               },
               function () {
 
@@ -54,8 +52,6 @@
         },
 
         getDistance: function (latitude, longitude) {
-            console.log("get distance", _currentLocation.latitude, _currentLocation.longitude, latitude, longitude);
-
             if (!_currentLocation) {
                 return 0;
             }
