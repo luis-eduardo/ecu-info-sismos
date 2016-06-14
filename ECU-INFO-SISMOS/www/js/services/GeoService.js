@@ -1,7 +1,5 @@
 ﻿angular.module('services').factory('GeoService', ['$q', function ($q) {
 
-    var API_KEY = "AIzaSyDd1R2d0jsnv4wVyCUyaZC9pqGfy10OOhg";
-
     var _currentLocation;
 
     var toRadians = function (Value) {
@@ -36,7 +34,9 @@
 
             var deferred = $q.defer();
 
-            var uri = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=" + API_KEY;
+            console.log("API Key", Config.API_KEY);
+
+            var uri = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=" + Config.API_KEY;
 
             $http.get(uri).success(function (data) {
 
